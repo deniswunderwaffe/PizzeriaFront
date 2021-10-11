@@ -35,7 +35,6 @@ const OrderProccess: FC<OrderProccessProps> = ({ codeId }) => {
     const { getAccessTokenSilently } = useAuth0();
     let history = useHistory();
     const [openModal, setOpenModal] = useState(false);
-    const [isUserRegistred, setUserRegistred] = useState(false);
     const phoneRef = useRef<HTMLInputElement>(null);
     const addressRef = useRef<HTMLInputElement>(null);
     const deliveryRef = useRef<HTMLInputElement>(null);
@@ -84,9 +83,7 @@ const OrderProccess: FC<OrderProccessProps> = ({ codeId }) => {
 
     const sendOrder = async (order: CreateOrder) => {
         const token = await getAccessTokenSilently();
-        console.log(order);
-        const responseData = await addOrder(order, token);
-        console.log(responseData);
+        addOrder(order, token);
     }
 
     const customerHandler = async () => {
