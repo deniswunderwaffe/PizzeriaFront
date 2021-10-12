@@ -27,7 +27,6 @@ const SiteHeader: FC<SiteHeaderProps> = ({ openCart, itemsCount }) => {
               Pizzeria
             </Link>
           </Typography>
-
           <IconButton
             size="large"
             edge="start"

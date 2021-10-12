@@ -1,5 +1,3 @@
-import { FoodCategory } from "./FoodCategory";
-
 export interface FoodItem{
     id:number
     name:string

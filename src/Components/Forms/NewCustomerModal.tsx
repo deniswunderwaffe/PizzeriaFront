@@ -56,7 +56,7 @@ const NewCustomerModal:FC<NewCustomerModalProps> = ({ openModal, onClose, onCust
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h5" component="h2">
-            Seems you are not in our database :(<br />Please register
+            Seems you are not in our database<br />Please register :)
           </Typography>
           <Divider variant="middle" sx ={{mb:"15px"}} />
           <form onSubmit={handleSubmit(onSubmitHandler)}>

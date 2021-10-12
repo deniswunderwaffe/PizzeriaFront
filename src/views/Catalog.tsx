@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { FoodItem } from '../api/models/FoodItem';
-import { useAuth0 } from "@auth0/auth0-react";
-import { addFoodItem, getFoodItemsByCategory, updateFoodItem, deleteFoodItem } from '../services/FoodItemService';
+import React, {useEffect, useState} from 'react';
+import {FoodItem} from '../api/models/FoodItem';
+import {useAuth0} from "@auth0/auth0-react";
+import {getFoodItemsByCategory} from '../services/FoodItemService';
 import SiteHeader from '../Components/SiteHeader';
-import { Container } from '@mui/material';
-import { FoodItemCategories } from '../utils/FoodItemCategories';
+import {Container} from '@mui/material';
+import {FoodItemCategories} from '../utils/FoodItemCategories';
 import Pizzas from '../Components/FoodItems/Pizzas';
 import Drinks from '../Components/FoodItems/Drinks';
 import Snacks from '../Components/FoodItems/Snacks';
@@ -12,9 +12,9 @@ import CartList from '../Components/Cart/CartList';
 import CartDrawer from '../Components/Cart/CartDrawer';
 import AddedSnack from '../Components/Cart/AddedSnack';
 import Loading from "../Components/Loading";
-import { Route, Switch, Link, useRouteMatch } from "react-router-dom";
+import {Route, Switch, useRouteMatch} from "react-router-dom";
 import OrderForm from './OrderForm';
-import { FoodItemExtra } from '../api/models/FoodItemExtra';
+import {FoodItemExtra} from '../api/models/FoodItemExtra';
 
 
 interface ICartContext {
@@ -34,7 +34,7 @@ interface ICartContext {
 }
 
 const defaultState = {
-  clearCart: () => {},
+  clearCart: () => { },
   addToCart: (foodItem) => { },
   handleExtra: (extra, checked) => { },
   clearExtras: () => { },
@@ -52,7 +52,7 @@ export const CartContext = React.createContext<ICartContext>(defaultState);
 
 const Catalog = () => {
   const { getAccessTokenSilently } = useAuth0();
-  
+
   const [isDataLoading, setDataLoading] = useState(false);
   const [isCodeDisabled, setCodeDisabled] = useState(false);
   const [isCartOpen, setCartOpen] = useState(false);
@@ -162,36 +162,6 @@ const Catalog = () => {
     }
   };
 
-  const addFoodItemHandler = async () => {
-    const dummyFood: FoodItem = {
-      name: "RealPizza",
-      id: 1,
-      price: 500,
-      description: "const token = await getAccessTokenSilently();const responseData = await addFoodItem(dummyFood, token);console.log(responseData);",
-      foodCategoryId: 1,
-      quantity: 1
-    }
-    const token = await getAccessTokenSilently();
-    const responseData = await addFoodItem(dummyFood, token);
-    console.log(responseData);
-
-  }
-  const updateFoodItemHandler = async () => {
-    const dummyFood: FoodItem = {
-      name: "Updated",
-      id: 4,
-      price: 600,
-      description: "",
-      foodCategoryId: 1,
-      quantity: 1
-    }
-    const token = await getAccessTokenSilently();
-    await updateFoodItem(dummyFood, token);
-  }
-  const deleteFoodItemHandler = async () => {
-    const token = await getAccessTokenSilently();
-    await deleteFoodItem(6, token);
-  }
   return (
     <div>
       <SiteHeader
@@ -206,7 +176,7 @@ const Catalog = () => {
             <Container
               sx={{ mt: "2rem" }}
             >
-              {isDataLoading ? (<Loading/>) : (
+              {isDataLoading ? (<Loading />) : (
                 <>
                   <Pizzas pizzas={pizzas} />
                   <Snacks snacks={snacks} />

@@ -45,7 +45,7 @@ const CartDrawer = () => {
                                 <Button
                                     variant={"contained"}
                                     onClick={context.closeCart}>
-                                    Procceed
+                                    Proceed
                                 </Button>
                             </Link>
                         </ListItem>

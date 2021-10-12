@@ -1,12 +1,7 @@
 import React, { useState, useEffect, FC, useContext, useRef, } from 'react';
-import { Order } from '../api/models/Order';
-import { CreateOrder } from '../api/models/create_models/CreateOrder';
 import { useAuth0 } from "@auth0/auth0-react";
-import { getOrders, addOrder, getOrderById, updateOrder, deleteOrder, patchOrderStatus } from '../services/OrderService';
 import { Divider, Typography, Box, TextField } from '@mui/material';
 import { Route, Switch, Link, useRouteMatch } from "react-router-dom";
-import { StatusCodes } from '../utils/StatusCodes';
-import ClientDetails from './ClientDetails';
 import { FoodItem } from '../api/models/FoodItem';
 import { Grid } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
@@ -30,25 +25,13 @@ const OrderForm: FC<OrderFormProps> = ({ foodItems, isCodeDisabled, setCodeDisab
 
     let match = useRouteMatch();
     const { getAccessTokenSilently } = useAuth0();
-    const [orders, setOrders] = useState<Order[]>([]);
     const [promotionalCode,setPromotionalCode] = useState(0);
     const promotionalCodeRef = useRef<HTMLInputElement>(null);
     const context = useContext(CartContext);
 
-
-
     useEffect(() => {
-        getOrdersSecure();
         context.clearExtras();
     }, [])
-    const getOrdersSecure = async () => {
-        try {
-            const token = await getAccessTokenSilently();
-            const responseData = await getOrders(token);
-            setOrders(responseData);
-        } catch (error) {
-        }
-    };
 
     const promotionalCodeHandler = async () => {
         const code = promotionalCodeRef.current!.value;
@@ -61,14 +44,6 @@ const OrderForm: FC<OrderFormProps> = ({ foodItems, isCodeDisabled, setCodeDisab
         }
     }
 
-    const deleteOrderHandler = async () => {
-        //const token = await getAccessTokenSilently();
-        //await deleteOrder(6,token);
-    }
-    const patchOrderStatusHandler = async () => {
-        const token = await getAccessTokenSilently();
-        await patchOrderStatus(1, StatusCodes.Delivered, token);
-    }
     return (
 
         <Switch>

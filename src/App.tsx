@@ -3,10 +3,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "./Components/Loading";
 import Catalog from "./views/Catalog"
 import LandingPage from './views/LandingPage';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import ProtectedRoute from './auth/protected-route';
+import { Switch, Route} from "react-router-dom";
+import Admin from './views/Admin';
 import "./App.css";
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import { createTheme, ThemeProvider} from '@mui/material/styles';
 import { orange } from '@mui/material/colors';
 
 declare module '@mui/material/styles' {
@@ -37,17 +37,19 @@ function App() {
     return <Loading />;
   }
   return (
-    <ThemeProvider theme={theme}>
-      <Switch>
-        {/* <ProtectedRoute path="/catalog" component={Catalog}/> */}
-        <Route path="/catalog">
+    <Switch>
+      <Route path="/catalog">
+        <ThemeProvider theme={theme}>
           <Catalog />
-        </Route>
-        <Route path="/">
-          <LandingPage />
-        </Route>
-      </Switch>
-    </ThemeProvider>
+        </ThemeProvider>
+      </Route>
+      <Route path="/admin">
+        <Admin />
+      </Route>
+      <Route path="/">
+        <LandingPage />
+      </Route>
+    </Switch>
   );
 }
 

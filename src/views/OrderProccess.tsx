@@ -1,18 +1,22 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Box, Button, TextField, Divider } from '@mui/material'
 import React, { FC, useContext, useRef, useState } from 'react'
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Alert } from "@mui/material"
 import { Snackbar } from "@mui/material"
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import { Typography } from '@mui/material';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Container } from '@mui/material';
-import Checkbox from '@mui/material/Checkbox';
 import { CartContext } from './Catalog';
 import NewCustomerModal from '../Components/Forms/NewCustomerModal';
-import { getCustomerById } from '../services/CustomerService';
+import { getCustomerByPhone } from '../services/CustomerService';
 import { Customer } from '../api/models/Customer';
 import { CreateOrder } from '../api/models/create_models/CreateOrder';
 import { addOrder } from '../services/OrderService';
@@ -42,20 +46,23 @@ const OrderProccess: FC<OrderProccessProps> = ({ codeId }) => {
     const [isSent, setSent] = useState(false);
     const [customer, setCustomer] = useState<Customer>({} as Customer);
     const context = useContext(CartContext);
+    const [value, setValue] = React.useState(false);
 
     const closeModalHandler = () => {
         setOpenModal(false);
     }
-
+    const handleChange = (event) => {
+        setValue(event.target.value);
+      };
     const afterSubmitLogic = () => {
         setSent(true);
         context.clearCart();
-        setTimeout(()=>history.push('/catalog'), 4000);
+        setTimeout(() => history.push('/catalog'), 4000);
     }
 
     const onSubmitHandler = async (data) => {
-        var desiredDateToTransfer = new Date();
-        var desiredDate = deliveryRef.current!.value;
+        let desiredDateToTransfer = new Date();
+        const desiredDate = deliveryRef.current!.value;
 
         if (desiredDate === "") {
             // если нету желаемой даты стандарт через 3 часа
@@ -83,13 +90,13 @@ const OrderProccess: FC<OrderProccessProps> = ({ codeId }) => {
 
     const sendOrder = async (order: CreateOrder) => {
         const token = await getAccessTokenSilently();
-        addOrder(order, token);
+        await addOrder(order, token);
     }
 
     const customerHandler = async () => {
         const phone = phoneRef.current!.value;
         const token = await getAccessTokenSilently(); //TODO должен быть по телефону а тут айди
-        const response = await getCustomerById(token, parseInt(phone));
+        const response = await getCustomerByPhone(token, phone);
 
         if (!response.status) {
             addressRef.current!.value = response.address;
@@ -137,14 +144,19 @@ const OrderProccess: FC<OrderProccessProps> = ({ codeId }) => {
             }
             <Divider variant="middle" sx={{ mb: "15px", mt: "15px" }} />
             <form onSubmit={handleSubmit(onSubmitHandler)}>
-                <Box style={{
+                <Box sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    gap: 25
+                    gap: 2,
                 }}>
-                    <label htmlFor="delivery-time">(Leave it if you want delivery as fast as possible)<br />Choose a time for your delivery:</label>
-                    <input ref={deliveryRef} type="datetime-local" id="delivery-time"
+                    <label htmlFor="delivery-time" style={{ fontFamily: 'Roboto' }}>
+                        (Leave it if you want delivery as fast as possible)<br />Choose a time for your delivery:
+                    </label>
+                    <input
+                        style={{ height: "52px", width: "221px", fontSize: "1.3em" }}
+                        ref={deliveryRef}
+                        type="datetime-local" id="delivery-time"
                         name="delivery-time"
                     />
                     <TextField
@@ -160,12 +172,18 @@ const OrderProccess: FC<OrderProccessProps> = ({ codeId }) => {
                         disabled
                         id="outlined-basic"
                         label="Address"
-                        maxRows={4}
                         variant="outlined" />
-                    <p>{errors.address?.message}</p>
-                    <label htmlFor="isCash">With Cash</label>
-                    <Checkbox id="isCash" {...register("isCash")} />
-
+                    <FormControl component="fieldset" sx={{mr:"100px"}}>
+                        <FormLabel component="legend">Payment options</FormLabel>
+                        <RadioGroup
+                            aria-label="payment"
+                            value={value}
+                            onChange={handleChange}
+                        >
+                            <FormControlLabel {...register("isCash")} value={false} control={<Radio />} label="Card" />
+                            <FormControlLabel {...register("isCash")} value={true} control={<Radio />} label="Cash" />
+                        </RadioGroup>
+                    </FormControl>
                     <Button
                         disabled={!isCustomer || isSent}
                         variant="contained"
@@ -184,7 +202,7 @@ const OrderProccess: FC<OrderProccessProps> = ({ codeId }) => {
             >
                 <Alert
                     severity="success"
-                >Order is placed successefuly!<br/> Redirecting...
+                >Order is placed successefuly!<br /> Redirecting...
                 </Alert>
             </Snackbar>
         </Container >

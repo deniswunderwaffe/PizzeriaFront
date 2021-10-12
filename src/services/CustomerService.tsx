@@ -1,6 +1,4 @@
 import {Customer} from "../api/models/Customer";
-import {CreateOrder} from "../api/models/create_models/CreateOrder";
-
 
 
 const BASE_URL =  "https://localhost:5001/api/";
@@ -24,10 +22,10 @@ export const getCustomers = async (token) =>{
         console.log(error.message);
     }
 }
-export const getCustomerById = async (token,id:number) =>{
+export const getCustomerByPhone = async (token,phone:string) =>{
     try {
         const response = await fetch(
-            BASE_URL + "Customer/" + id,
+            BASE_URL + "Customer/phone/?phone=" + phone,
             {
                 method:"GET",
                 headers: {

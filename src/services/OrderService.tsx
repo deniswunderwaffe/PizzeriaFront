@@ -6,10 +6,11 @@ import {CreateOrder} from "../api/models/create_models/CreateOrder";
 const BASE_URL =  "https://localhost:5001/api/";
 
 
-export const getOrders = async (token) =>{
+export const getOrders = async (token,pageSize:number = 10,pageNumber:number = 1) =>{
+    let url = BASE_URL + `Order?PageNumber=${pageNumber}&PageSize=${pageSize}`
     try {
         const response = await fetch(
-            BASE_URL + "Order",
+            url,
             {
                 method:"GET",
                 headers: {
@@ -17,8 +18,7 @@ export const getOrders = async (token) =>{
                 },
             }
         );
-        const responseData = await response.json();
-        return responseData;
+        return response;
         
     } catch (error:any) {
         console.log(error.message);

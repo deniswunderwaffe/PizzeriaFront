@@ -10,7 +10,7 @@ const Snacks:FC<SnackProps> = ({snacks}) => {
     return (
         <React.Fragment>
             <Typography variant="h3" component="h1" gutterBottom>
-                Snaks
+                Snacks
             </Typography>
             <Divider variant="middle" sx ={{mb:"15px"}} />
 
