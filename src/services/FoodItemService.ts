@@ -1,15 +1,16 @@
-import {FoodItem} from "../api/models/FoodItem";
+import { CreateHelp } from "../api/models/create_models/CreateHelp";
+import { FoodItem } from "../api/models/FoodItem";
 
 
-const BASE_URL =  "https://localhost:5001/api/";
+const BASE_URL = "https://localhost:5001/api/";
 
 
-export const getFoodItemsByCategory = async (token,category:string) =>{
+export const getFoodItemsByCategory = async (token, category: string) => {
     try {
         const response = await fetch(
-            BASE_URL + "FoodItem" + `?Category=${category}`,
+            `${BASE_URL}FoodItem?Category=${category}`,
             {
-                method:"GET",
+                method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -17,17 +18,38 @@ export const getFoodItemsByCategory = async (token,category:string) =>{
         );
         const responseData = await response.json();
         return responseData;
-        
-    } catch (error:any) {
+
+    } catch (error: any) {
         console.log(error.message);
     }
 }
-export const getFoodItemById = async (token,id) =>{
+
+export const getHelp = async (help: CreateHelp) => {
     try {
         const response = await fetch(
-            BASE_URL + "FoodItem/" + {id},
+            `${BASE_URL}FoodItem/recommendation`,
             {
-                method:"GET",
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(help),
+            }
+        );
+        const responseData = await response.json();
+        return responseData;
+
+    } catch (error: any) {
+        console.log(error.message);
+    }
+}
+
+export const getFoodItemById = async (token, id) => {
+    try {
+        const response = await fetch(
+            BASE_URL + "FoodItem/" + { id },
+            {
+                method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -35,12 +57,12 @@ export const getFoodItemById = async (token,id) =>{
         );
         const responseData = await response.json();
         return responseData;
-        
-    } catch (error:any) {
+
+    } catch (error: any) {
         console.log(error.message);
     }
 }
-export const addFoodItem = async (foodItem:FoodItem,token)=>{
+export const addFoodItem = async (foodItem: FoodItem, token) => {
     try {
         const response = await fetch(BASE_URL + "FoodItem", {
             method: 'POST',
@@ -52,12 +74,12 @@ export const addFoodItem = async (foodItem:FoodItem,token)=>{
         })
         const responseData = await response.json();
         return responseData;
-        
-    } catch (error:any) {
+
+    } catch (error: any) {
         console.log(error.message);
     }
 }
-export const updateFoodItem = async (foodItem:FoodItem,token)=>{
+export const updateFoodItem = async (foodItem: FoodItem, token) => {
     try {
         await fetch(BASE_URL + "FoodItem/" + foodItem.id, {
             method: 'PUT',
@@ -67,21 +89,21 @@ export const updateFoodItem = async (foodItem:FoodItem,token)=>{
             },
             body: JSON.stringify(foodItem),
         })
-        
-    } catch (error:any) {
+
+    } catch (error: any) {
         console.log(error.message);
     }
 }
-export const deleteFoodItem = async (id,token) =>{
+export const deleteFoodItem = async (id, token) => {
     try {
-        await fetch(BASE_URL + "FoodItem/"+ id, {
+        await fetch(BASE_URL + "FoodItem/" + id, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`
             },
         })
-        
-    } catch (error:any) {
+
+    } catch (error: any) {
         console.log(error.message);
     }
 }

@@ -14,6 +14,7 @@ import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import OrderProccess from './OrderProccess';
 import { validateCode } from '../services/PromotionalCodeService';
 import PromotionalCodeResponse from '../api/models/PromotionalCodeResponse';
+import OrderHelp from '../Components/Forms/OrderHelp';
 
 
 interface OrderFormProps {
@@ -25,7 +26,7 @@ const OrderForm: FC<OrderFormProps> = ({ foodItems, isCodeDisabled, setCodeDisab
 
     let match = useRouteMatch();
     const { getAccessTokenSilently } = useAuth0();
-    const [promotionalCode,setPromotionalCode] = useState(0);
+    const [promotionalCode, setPromotionalCode] = useState(0);
     const promotionalCodeRef = useRef<HTMLInputElement>(null);
     const context = useContext(CartContext);
 
@@ -48,7 +49,7 @@ const OrderForm: FC<OrderFormProps> = ({ foodItems, isCodeDisabled, setCodeDisab
 
         <Switch>
             <Route path={`${match.path}/orderProccess`}>
-                <OrderProccess codeId = {promotionalCode}/>
+                <OrderProccess codeId={promotionalCode} />
             </Route>
             <Route path={match.path}>
                 <Link to={`/catalog`}>
@@ -76,9 +77,12 @@ const OrderForm: FC<OrderFormProps> = ({ foodItems, isCodeDisabled, setCodeDisab
                     </Box>
                     <Divider variant="middle" sx={{ mb: "15px" }} />
                     {!context.items.length ? (
-                        <Typography variant="h3" component="h1" gutterBottom sx={{ flexGrow: 1 }}>
-                            Order is empty :(
-                        </Typography>
+                        <React.Fragment>
+                            <Typography variant="h3" component="h1" gutterBottom sx={{ flexGrow: 1 }}>
+                                Order is empty :(
+                            </Typography>
+                            <OrderHelp />
+                        </React.Fragment>
                     ) :
                         (<Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                             {

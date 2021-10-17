@@ -31,6 +31,7 @@ interface ICartContext {
   extras: FoodItemExtra[];
   isCartOpen: boolean;
   closeCart: () => void;
+  addArrayToCart: (foodItems: FoodItem[]) => void;
 }
 
 const defaultState = {
@@ -47,6 +48,7 @@ const defaultState = {
   extras: [],
   isCartOpen: false,
   closeCart: () => { },
+  addArrayToCart: (foodItems) => {}
 };
 export const CartContext = React.createContext<ICartContext>(defaultState);
 
@@ -118,6 +120,9 @@ const Catalog = () => {
     closeCart: () => { setCartOpen(false) },
     discount: discount,
     addDiscount: (discount) => { setDiscount(discount) },
+    addArrayToCart: (foodItems) => {
+      setCart(foodItems);
+    },
     totalPrice: calculateTotalPrice(),
 
   };
